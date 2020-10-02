@@ -5,35 +5,15 @@
  * not contain any secrets (passwords, etc) - we recommend you manage these
  * with environmental variables instead.
  *
- * This file is in JSON5 format, in VSCode you can use "JSON with comments" as
- * the file format.
  */
 
 {
   /*
-   * connectionString: this tells Graphile Migrate where to find the database
-   * to run the migrations against.
-   *
-   * RECOMMENDATION: use `DATABASE_URL` envvar instead.
+   * RECOMMENDATIONS:
+   * - use `DATABASE_URL` envvar instead of "connectionString".
+   * - use `SHADOW_DATABASE_URL` envvar instead of "shadowConnectionString".
+   * - use `ROOT_DATABASE_URL` envvar instead of "rootConnectionString".
    */
-  // "connectionString": "postgres://appuser:apppassword@host:5432/appdb",
-
-  /*
-   * shadowConnectionString: like connectionString, but this is used for the
-   * shadow database (which will be reset frequently).
-   *
-   * RECOMMENDATION: use `SHADOW_DATABASE_URL` envvar instead.
-   */
-  // "shadowConnectionString": "postgres://appuser:apppassword@host:5432/appdb_shadow",
-
-  /*
-   * rootConnectionString: like connectionString, but this is used for
-   * dropping/creating the database in `graphile-migrate reset`. This isn't
-   * necessary, shouldn't be used in production, but helps during development.
-   *
-   * RECOMMENDATION: use `ROOT_DATABASE_URL` envvar instead.
-   */
-  // "rootConnectionString": "postgres://adminuser:adminpassword@host:5432/postgres",
 
   /*
    * pgSettings: key-value settings to be automatically loaded into PostgreSQL
@@ -41,7 +21,7 @@
    * <value>`
    */
   "pgSettings": {
-    // "search_path": "app_public,app_private,app_hidden,public",
+    "search_path": "app_public,app_private,app_hidden,public"
   },
 
   /*
@@ -62,7 +42,9 @@
    * these.
    */
   "placeholders": {
-    // ":DATABASE_VISITOR": "!ENV", // Uses process.env.DATABASE_VISITOR
+    // TODO: replace with all our roles
+    ":DATABASE_AUTHENTICATOR": "!ENV",
+    ":DATABASE_VISITOR": "!ENV"
   },
 
   /*
@@ -85,19 +67,24 @@
    * afterReset: actions executed after a `graphile-migrate reset` command.
    */
   "afterReset": [
-    // "afterReset.sql",
-    // { "_": "command", "command": "graphile-worker --schema-only" },
+    "!afterReset.sql"
+    /*  TODO: add a command to install graphile-migrate (schema) on the db before any migration
+        WHEN: once @app/worker is init
+    {
+      "_": "command",
+      "command": "graphile-worker --schema-only"
+    } */
   ],
- 
+
   /*
    * afterAllMigrations: actions executed once all migrations are complete.
    */
   "afterAllMigrations": [
-    // {
-    //   "_": "command",
-    //   "shadow": true,
-    //   "command": "if [ \"$IN_TESTS\" != \"1\" ]; then ./scripts/dump-db; fi",
-    // },
+    {
+      "_": "command",
+      "shadow": true,
+      "command": "if [ \"$IN_TESTS\" != \"1\" ]; then ./scripts/dump-db; fi"
+    }
   ],
 
   /*
