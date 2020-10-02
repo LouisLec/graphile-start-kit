@@ -1,0 +1,16 @@
+{
+  "name": "postgraphile-start-kit",
+  "version": "1.0.0",
+  "description": "A postgraphile boilerplate including graphile migrate, graphile-worker, postgraphile, graphile-scheduler written in typescript and including testing. It is based on yarn workspaces",
+  "author": "Louis Lecointre",
+  "license": "MIT",
+  "workspaces": {
+    "packages": [
+      "@app/*"
+    ]
+  },
+  "private": true,
+  "scripts": {
+    "server": "yarn workspace server"
+  }
+}
