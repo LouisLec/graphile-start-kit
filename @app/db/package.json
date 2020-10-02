@@ -1,0 +1,20 @@
+{
+  "name": "@app/db",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Louis Lecointre",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "gm": "node -r @app/config/env node_modules/.bin/graphile-migrate",
+    "migrate": "yarn gm migrate",
+    "watch": "yarn gm watch",
+    "commit": "yarn gm commit",
+    "uncommit": "yarn gm uncommit",
+    "reset": "yarn gm reset",
+    "dump": "yarn gm migrate && yarn gm reset --shadow --erase && yarn gm migrate --shadow --forceActions"
+  },
+  "dependencies": {
+    "graphile-migrate": "^1.0.1"
+  }
+}
