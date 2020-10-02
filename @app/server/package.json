@@ -1,7 +1,8 @@
 {
-  "name": "server",
+  "name": "@app/server",
   "version": "1.0.0",
   "license": "MIT",
+  "private": true,
   "scripts": {
     "build": "tsc --build",
     "start": "yarn build && node -r @app/config/env dist/index.js"
